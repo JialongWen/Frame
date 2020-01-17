@@ -1,6 +1,7 @@
 package com.wjl.frame.aop;
 
 import com.wjl.frame.annotation.MyTransactional;
+import com.wjl.frame.propagation.SpreadControl;
 import com.wjl.frame.transaction.TransactionUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -23,6 +24,8 @@ public class AopExtTransaction {
 
     @Autowired
     private TransactionUtils transactionUtil;
+    @Autowired
+    private SpreadControl spreadControl;
 
     @Value("${my-transaction-path}")
     private String transactionPath;
@@ -70,7 +73,7 @@ public class AopExtTransaction {
     }
 
     private TransactionStatus begin(MyTransactional myTransactional) {
-        if (myTransactional == null){
+        if (myTransactional == null || !spreadControl.propageetionControl(myTransactional)){
             return null;
         }
         System.out.println("开启事务");

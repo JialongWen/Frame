@@ -17,6 +17,9 @@ public class TestServiceImpl implements TestService {
     @Autowired
     private TestDao testDao;
 
+    public TestServiceImpl() {
+        System.out.println("SpringIoc 创建实例");
+    }
 
     @Override
     @MyTransactional(propagation= Propagation.REQUIRED)
